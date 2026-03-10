@@ -87,7 +87,6 @@ window.KIRKA_OUR_SHORT_IDS = ["YOUR_USER_ID_NO_TAG"];
       display:flex;
       flex-direction:column;
       gap:1rem;
-      overflow-y:auto;
     `;
 
     // Close button
@@ -127,7 +126,7 @@ window.KIRKA_OUR_SHORT_IDS = ["YOUR_USER_ID_NO_TAG"];
       `;
     });
 
-    // Delete buttons as pseudo-tabs
+    // Delete buttons
     const deleteDMsBtn = document.createElement("div");
     deleteDMsBtn.innerText = "Delete All DMs";
     deleteDMsBtn.style = `
@@ -174,13 +173,19 @@ window.KIRKA_OUR_SHORT_IDS = ["YOUR_USER_ID_NO_TAG"];
 
     // Content container
     const contentContainer = document.createElement("div");
+    
+    // === SCROLL ADJUSTMENT: 4 rows max ===
+    const rowHeight = 100; // approx height of one DM row in px
+    const maxRows = 4;
     contentContainer.style = `
       display:flex;
       flex-direction:column;
       gap:1rem;
       overflow-y:auto;
-      max-height:1200px;
+      max-height:${rowHeight * maxRows}px;
     `;
+    // ====================================
+    
     panel.appendChild(contentContainer);
 
     // Render DMs
@@ -207,6 +212,9 @@ window.KIRKA_OUR_SHORT_IDS = ["YOUR_USER_ID_NO_TAG"];
         });
         contentContainer.appendChild(rowDiv);
       });
+
+      // Auto-scroll to bottom
+      contentContainer.scrollTop = contentContainer.scrollHeight;
     };
 
     // Render Trades
@@ -222,21 +230,13 @@ window.KIRKA_OUR_SHORT_IDS = ["YOUR_USER_ID_NO_TAG"];
           cursor:pointer;
         `;
 
-        // Extract only "/trade accept [NUMBERS]" from the message
         const match = trade.message.match(/\/trade accept \d+/);
         const tradeCmd = match ? match[0] : trade.message;
 
         tradeDiv.innerHTML = trade.message;
 
-        // Hover effect
-        tradeDiv.onmouseover = () => {
-          tradeDiv.style.background = "rgba(255,255,255,0.15)";
-        };
-        tradeDiv.onmouseout = () => {
-          tradeDiv.style.background = "rgba(255,255,255,0.05)";
-        };
-
-        // Copy trade command on click
+        tradeDiv.onmouseover = () => tradeDiv.style.background = "rgba(255,255,255,0.15)";
+        tradeDiv.onmouseout = () => tradeDiv.style.background = "rgba(255,255,255,0.05)";
         tradeDiv.onclick = () => {
           navigator.clipboard.writeText(tradeCmd)
             .then(() => console.log(`[KCProxy] Copied: ${tradeCmd}`))
@@ -245,6 +245,9 @@ window.KIRKA_OUR_SHORT_IDS = ["YOUR_USER_ID_NO_TAG"];
 
         contentContainer.appendChild(tradeDiv);
       });
+
+      // Auto-scroll for trades too
+      contentContainer.scrollTop = contentContainer.scrollHeight;
     };
 
     // Default tab
