@@ -219,8 +219,30 @@ window.KIRKA_OUR_SHORT_IDS = ["YOUR_USER_ID_NO_TAG"];
           border-radius:.4rem;
           background:rgba(255,255,255,0.05);
           word-break:break-word;
+          cursor:pointer;
         `;
+
+        // Extract only "/trade accept [NUMBERS]" from the message
+        const match = trade.message.match(/\/trade accept \d+/);
+        const tradeCmd = match ? match[0] : trade.message;
+
         tradeDiv.innerHTML = trade.message;
+
+        // Hover effect
+        tradeDiv.onmouseover = () => {
+          tradeDiv.style.background = "rgba(255,255,255,0.15)";
+        };
+        tradeDiv.onmouseout = () => {
+          tradeDiv.style.background = "rgba(255,255,255,0.05)";
+        };
+
+        // Copy trade command on click
+        tradeDiv.onclick = () => {
+          navigator.clipboard.writeText(tradeCmd)
+            .then(() => console.log(`[KCProxy] Copied: ${tradeCmd}`))
+            .catch(() => console.warn("[KCProxy] Failed to copy trade command."));
+        };
+
         contentContainer.appendChild(tradeDiv);
       });
     };
