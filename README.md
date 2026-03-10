@@ -1,6 +1,6 @@
 # Kirka DM & Trades Panel Script
 
-This script enhances your experience on [Kirka.io](https://kirka.io) by providing a **custom DM and Accepted Trades panel** with notifications and easy management tools. It works by connecting to a WebSocket and capturing messages for your Short ID
+This script enhances your experience on [Kirka.io](https://kirka.io) by providing a **custom DM and Accepted Trades panel** with notifications and easy management tools. It works by connecting to a WebSocket and capturing messages for your Short ID.
 
 ---
 
@@ -15,6 +15,12 @@ This script enhances your experience on [Kirka.io](https://kirka.io) by providin
   - Displays **DMs** (messages where your Short ID is mentioned) and **Accepted Trades** (type 13 messages).
   - Messages displayed in **horizontal rows**, newest to oldest, 5 messages per row.
   - Weapon/skin mentions simplified: `[Void SCAR|SCAR|WEAPON_SKIN|MYTHICAL] → [Void]`.
+
+- **Accepted Trades Updates (NEW)**
+  - **Click-to-copy** functionality: hover and click a trade to copy only `/trade accept [NUMBERS]` instead of the full message.
+  - Hover effect added to indicate interactivity.
+  - Preserves full trade message display while allowing easy copying.
+  - Logs copied trade commands to console for confirmation.
 
 - **Tabs & Buttons**
   - **DMs** tab
@@ -44,6 +50,7 @@ This script enhances your experience on [Kirka.io](https://kirka.io) by providin
 > ```
 
 4. DMs mentioning your Short ID will now trigger notifications and appear in the panel.
+5. **Accepted Trades are now clickable** — clicking copies only the `/trade accept [NUMBERS]` command, (IN ACCEPTED TRADES TAB THIS IS NOT SOMETHING TO USE TO COPY REAL RUNNING TRADE IDS)
 
 ---
 
@@ -58,6 +65,11 @@ This script enhances your experience on [Kirka.io](https://kirka.io) by providin
 - **Delete Buttons**
   - Clear all saved DMs or Accepted Trades with a single click.
     
+- **Trade Interaction (NEW)**
+  - Hover over a trade message to see a highlight effect.
+  - Click to copy the `/trade accept [NUMBERS]` command to your clipboard.
+  - Useful for quickly accepting trades without manually selecting IDs.
+
 - **Notifications**
   - Pop-up notifications for DMs, click to view in panel.
 
@@ -85,5 +97,13 @@ This script is provided as-is for personal use. Do not redistribute without perm
 
 ## Author
 
-Akuma — Custom Kirka.io enhancement scripts (#NUGGET)
-i took inspiration from IamCalledGlitchy (#GLITCH)
+Akuma — Custom Kirka.io enhancement scripts (#NUGGET)  
+Inspired by IamCalledGlitchy (#GLITCH)
+
+---
+
+### ✅ Summary of Updates
+1. **Clickable Accepted Trades** – now copies only `/trade accept [NUMBERS]`.
+2. **Hover effect** – visual cue for interactivity.
+3. **Preserves full trade display** – no loss of information.
+4. **Console log confirmation** – shows which trade command was copied.
