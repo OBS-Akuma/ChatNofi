@@ -1,7 +1,7 @@
-// === Kirka Trade Viewer (Live Updating) ===
-// /t opens the trade menu
-// Trades auto-update live
+// === Kirka Trade Viewer (Draggable + Live Updating) ===
+// /t opens trade menu
 // Click trade → copies /trade accept NUMBER
+// Window can be dragged
 
 (function () {
 
@@ -50,6 +50,40 @@
     return tradeDiv;
   };
 
+  const makeDraggable = (element, handle) => {
+
+    let isDragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    handle.onmousedown = (e) => {
+
+      isDragging = true;
+
+      const rect = element.getBoundingClientRect();
+
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+
+      document.onmousemove = (e) => {
+
+        if (!isDragging) return;
+
+        element.style.left = (e.clientX - offsetX) + "px";
+        element.style.top = (e.clientY - offsetY) + "px";
+        element.style.transform = "none";
+
+      };
+
+      document.onmouseup = () => {
+        isDragging = false;
+        document.onmousemove = null;
+      };
+
+    };
+
+  };
+
   const showTradeMenu = () => {
 
     const existing = document.getElementById("trade-menu");
@@ -81,12 +115,15 @@
       gap:1rem;
     `;
 
+    // Title (drag handle)
     const title = document.createElement("div");
     title.innerText = "Trade Requests (Type 13)";
     title.style = `
       font-size:1.3rem;
       font-weight:bold;
       color:#fff;
+      cursor:move;
+      user-select:none;
     `;
     tradePanel.appendChild(title);
 
@@ -123,6 +160,10 @@
     });
 
     document.body.appendChild(tradePanel);
+
+    // enable dragging
+    makeDraggable(tradePanel, title);
+
   };
 
   console.log("[TradeViewer] Connecting to chat...");
@@ -136,8 +177,7 @@
       const data = JSON.parse(event.data);
       if (!data.message) return;
 
-      // open menu with /t
-      if (data.message.trim() === "nuggets") {
+      if (data.message.trim() === "rawr") {
         showTradeMenu();
       }
 
@@ -145,7 +185,6 @@
       if (seenTrades.has(unique)) return;
       seenTrades.add(unique);
 
-      // capture trades
       if (data.type === 13) {
 
         const trade = {
@@ -156,7 +195,6 @@
         trades.push(trade);
         saveTrades();
 
-        // === LIVE UPDATE MENU ===
         if (tradeList) {
           const newTrade = createTradeElement(trade);
           tradeList.prepend(newTrade);
